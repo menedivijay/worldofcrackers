@@ -1,0 +1,35 @@
+.bg-purple{
+    background-color: purple;
+}
+.text-purple{
+    color: rgb(75, 16, 75);
+}
+.text-white{
+    color: rgb(27, 26, 26);
+}
+.b-purple{
+    background-color: purple;
+}
+.btn-purple{
+    background-color: purple;
+    color: white;
+}
+.btn-purple:hover,
+.btn-purple:focus {
+    background-color:purple;
+    color:rgb(246, 240, 246);
+    border-color: purple;
+  
+}
+
+.btn-outline-purple {
+  color: purple; 
+  border-color: purple; 
+}
+
+.btn-outline-purple:hover,
+.btn-outline-purple:focus {
+  color: #fff; 
+  background-color:purple; 
+  border-color: purple;
+}
