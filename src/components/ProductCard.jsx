@@ -1,5 +1,6 @@
 import { Plus, Minus } from "lucide-react";
 import useCart from "../contexts/CartContext";
+import { useAuth } from "../hooks/useAuth";
 
 const ProductCard = ({
   id,
@@ -10,20 +11,23 @@ const ProductCard = ({
   discountedPrice,
   currency = "₹",
 }) => {
-
+  const { isAuthenticated } = useAuth();
   const { addItem, updateQuantity, getItemQuantity } = useCart();
   const discountPercentage = Math.round(((originalPrice - discountedPrice) / originalPrice) * 100);
   const quantity = getItemQuantity(id);
 
   const handleAddToCart = () => {
+    if (isAuthenticated){
     addItem({
       id,
       name,
       brand,
       image,
       price: discountedPrice,
-      currency
-    });
+      currency });
+    } else {
+      alert("Please login and add items to your cart")
+    }
   };
 
   const handleQuantityChange = (newQuantity) => {

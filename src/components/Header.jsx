@@ -3,12 +3,16 @@ import PropTypes from "prop-types";
 import useCart from '../contexts/CartContext';
 import { Filter, ShoppingCart } from 'lucide-react';
 import { Search, User } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from "react-router-dom";
 import '../App.css'
 
 function Headers({ onFilterClick }){
+
+  const { isAuthenticated, user } = useAuth();
   const { state } = useCart();
   const navigate = useNavigate();
+
 
     return (
           <header className="sticky-top shadow-sm" style={{width: "100%",backgroundImage: "url('/images/header1.gif')", backgroundSize: "cover", backgroundPosition: "center",}}>
@@ -51,9 +55,10 @@ function Headers({ onFilterClick }){
                   <button
                     type="button"
                     className="btn text-white d-flex align-items-center  px-md-1 position-relative"
-                    onClick={() => navigate('/profile')}
+                    onClick={() => navigate("/profile")}
                   >
                     <User className="bi bi-cart me-md-2" />
+                    <span>{isAuthenticated ? user?.username : 'Profile'}</span>
                   </button>
                   <button type="button" className="btn text-white d-flex align-items-center  px-md-1 position-relative"
                     onClick={() => navigate("/cart")}
