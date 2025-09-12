@@ -14,8 +14,6 @@ const categories = [
 
 ];
 
-
-
 function Sidebar({ 
   selectedCategory, 
   selectedBrands = [], 

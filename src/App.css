@@ -1,3 +1,77 @@
+.sticky-bar {
+  position: sticky;
+  z-index: 1020;
+  top: 7.3rem; /* default for mobile */
+}
+
+@media (min-width: 768px) { /* md+ for desktop */
+  .sticky-bar {
+    top: 3.8rem;
+  }
+}
+.sticky-checkout {
+  position:sticky;
+  z-index: 1020;
+  top:0; /* default for mobile */
+}
+
+@media (min-width: 768px) { /* md+ for desktop */
+  .sticky-checkout {
+    top:0;
+  }
+}
+
+.custom-top-24 {
+  top: 6rem; /* 24 * 0.25rem = 6rem */
+}
+
+.custom-left {
+  margin-left:0px; /* adjust as needed */
+}
+
+@media (min-width: 768px) { /* md+ for desktop */
+  .custom-left{
+    margin-left:600px;
+  }
+}
+
+
+
+
+
+
+
+
+/* Mobile view (up to 768px) */
+@media (max-width: 768px) {
+  .cart-item {
+    flex-direction: column;       /* Stack elements vertically */
+    align-items: flex-start;      /* Align left instead of center */
+    text-align: left;             /* Prevent awkward center text */
+    gap: 1rem;
+  }
+
+  .cart-item img {
+    width: 80px;                  /* Slightly larger for mobile */
+    height: 80px;
+  }
+
+  .cart-item .quantity-controls {
+    margin-top: 0.5rem;
+  }
+
+  .cart-item .price-section {
+    width: 100%;                  /* Take full width */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+}
+
+
+
+
 
 .sticky-header {
   margin-bottom: 0.25rem;  /* mb-1 */
@@ -29,3 +103,69 @@
   color: purple;              /* invert text on hover */
 }
   
+
+
+
+
+/* Mobile-first default styles */
+.cart-item-1 {
+  flex-direction: column; /* stack vertically on mobile */
+  align-items: flex-start;
+  gap: 0rem; /* small spacing between image and text */
+  padding: 0;
+}
+
+.cart-item-1 img {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 0.5rem;
+}
+
+.cart-item-1 .flex-grow-a {
+  width: 100%; /* text takes full width on mobile */
+}
+
+.cart-item-1 h6 {
+  font-size: 0.9rem; /* slightly smaller title for mobile */
+  margin-bottom: 0.25rem;
+}
+
+.cart-item-1 p {
+  font-size: 0.75rem; /* smaller brand text for mobile */
+  margin-bottom: 0;
+}
+
+/* Larger screens (≥576px) restore horizontal layout */
+@media (min-width: 576px) {
+  .cart-item-1 {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .cart-item-1 img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 0;
+  }
+  .cart-item-1 .flex-grow-a {
+    width: auto;
+  }
+
+  .cart-item-1 h6 {
+    font-size: 1rem;
+  }
+
+  .cart-item-1 p {
+    font-size: 0.85rem;
+  }
+}
+
+.login-link{
+   text-decoration: none;
+   color: #07a307;
+   font-weight: 600;
+   padding-left:5px ;
+   margin-bottom: 2px;
+}
+

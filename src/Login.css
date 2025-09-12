@@ -1,35 +1,212 @@
-.bg-purple{
-    background-color: purple;
+.signin-container {
+   min-height: 91.5vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 20px;
+   min-height: 91.5vh;
+  position: relative;
+  overflow: hidden;
 }
-.text-purple{
-    color: rgb(75, 16, 75);
+.signin-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(22, 42, 16, 0.5);
+            border: 1px solid rgba(43, 47, 16, 0.4);
+            max-width: 480px;
+            width: 100%;
+            padding: 30px;
 }
-.text-white{
-    color: rgb(27, 26, 26);
+.brand-title {
+            color: #36c744;
+            font-weight: bold;
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+            text-align: center;
 }
-.b-purple{
-    background-color: purple;
-}
-.btn-purple{
-    background-color: purple;
-    color: white;
-}
-.btn-purple:hover,
-.btn-purple:focus {
-    background-color:purple;
-    color:rgb(246, 240, 246);
-    border-color: purple;
+.logo-vijay{
+  width: 100px;
+  height: 50px;
+  padding-left:8px;
   
 }
-
-.btn-outline-purple {
-  color: purple; 
-  border-color: purple; 
+.brand-subtitle {
+            color: #070000;
+            font-size: 1rem;
+            margin-top:5px;
+            text-align: center;
+}
+.form-floating {
+            margin-bottom: 20px;
+}
+.form-control {
+            border-radius: 12px;
+            border: 2px solid #bff8bc;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+}
+.form-check-input{
+     border:1px solid black;
+     margin-left:4px;
+}
+.form-check-label{
+  margin-left:2px;
+}
+.botn{
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  width: 100%;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+  display: inline-block;
+  background-color: #47db4e;
+  color: white;
+}
+.botn:hover{
+  background-color: #00c61a;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+.to_login {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            justify-content: baseline;
+}
+.login-link{
+   text-decoration: none;
+   color: #07a307;
+   font-weight: 600;
+   padding-left:5px ;
+}
+.login-link:hover{
+  color: #47db4e;
 }
 
-.btn-outline-purple:hover,
-.btn-outline-purple:focus {
-  color: #fff; 
-  background-color:purple; 
-  border-color: purple;
+.useradio{
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.register{
+  margin-bottom: 10px;
+  column-gap: 5px;
+}
+.register input{
+ margin-left:8px;
+  
+}
+.admin{
+  padding-bottom: 4px;
+}
+
+@media only screen and (max-width: 600px){
+  .signin-container {
+   min-height: 91.5vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 20px;
+   min-height: 91.5vh;
+  position: relative;
+  overflow: hidden;
+
+}
+.signin-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(22, 42, 16, 0.5);
+            border: 1px solid rgba(43, 47, 16, 0.4);
+            max-width: 480px;
+            width: 100%;
+            padding: 30px;
+}
+.brand-title {
+            color: #36c744;
+            font-weight: bold;
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+            text-align: center;
+}
+.logo-vijay{
+  width: 100px;
+  height: 50px;
+  padding-left:8px;
+  
+}
+.brand-subtitle {
+            color: #070000;
+            font-size: 1rem;
+            margin-top:5px;
+            text-align: center;
+}
+.form-floating {
+            margin-bottom: 20px;
+}
+.form-control {
+            border-radius: 12px;
+            border: 2px solid #bff8bc;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+}
+.form-check-input{
+     border:1px solid black;
+     margin-left:4px;
+}
+.form-check-label{
+  margin-left:2px;
+}
+.botn{
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  width: 100%;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+  display: inline-block;
+  background-color: #47db4e;
+  color: white;
+}
+.botn:hover{
+  background-color: #00c61a;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+.to_login {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            justify-content: baseline;
+}
+.login-link{
+   text-decoration: none;
+   color: #07a307;
+   font-weight: 600;
+   padding-left:5px ;
+}
+.login-link:hover{
+  color: #47db4e;
+}
+
+.useradio{
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.register{
+  margin-bottom: 10px;
+  column-gap: 5px;
+}
+.register input{
+ margin-left:8px;
+  
+}
+.admin{
+  padding-bottom: 4px;
+}
 }

@@ -4,8 +4,6 @@ import useCart from '../contexts/CartContext';
 import { Filter, ShoppingCart } from 'lucide-react';
 import { Search, User } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
-
-
 import '../App.css'
 
 function Headers({ onFilterClick }){
@@ -39,7 +37,7 @@ function Headers({ onFilterClick }){
                 {/* Search Bar (Desktop Only) */}
                 <div className="d-none d-md-flex flex-grow-1 mx-4" style={{ maxWidth: '500px' }}>
                   <div className="position-relative w-100">
-                    <Search className="bi bi-search position-absolute top-50 start-0 translate-middle-y ps-3 text-muted"/>
+                    <Search className="bi bi-search position-absolute top-50 start-0 translate-middle-y ps-3 text-muted" size={30}/>
                     <input 
                       type="text" 
                       className="form-control ps-5" 
@@ -50,13 +48,15 @@ function Headers({ onFilterClick }){
 
                 {/* Action Buttons */}
                 <div className="d-flex align-items-center gap-1 gap-md-3">
-                  <button type="button" className="btn text-white d-flex align-items-center p-2 px-md-3"
-                  onClick={()=> navigate("/login")}>
-                    <User className="bi bi-person me-md-2"/>
-                    <span className="d-none d-md-inline">Login</span>
+                  <button
+                    type="button"
+                    className="btn text-white d-flex align-items-center  px-md-1 position-relative"
+                    onClick={() => navigate('/profile')}
+                  >
+                    <User className="bi bi-cart me-md-2" />
                   </button>
                   <button type="button" className="btn text-white d-flex align-items-center  px-md-1 position-relative"
-                    onClick={() => navigate("/checkout")}
+                    onClick={() => navigate("/cart")}
                   >
                       <ShoppingCart className="bi bi-cart me-md-2"/>
                       <span className="d-none d-md-inline">Cart</span>

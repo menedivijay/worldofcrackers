@@ -65,7 +65,7 @@ function Dashboard() {
   return(
     <div>
           <Header onFilterClick={() => setMobileFiltersOpen(true)} />
-            <div className="d-flex container-fluid ">
+            <div className="d-flex container-fluid">
              <div className="d-none d-lg-block" style={{top:"4rem"}}>
               <Sidebar 
                 selectedCategory={selectedCategory}
@@ -133,35 +133,31 @@ function Dashboard() {
                   }
                 `}</style>
               </>  
-              <main className="flex-grow p-4 ">
-                  <div className=" bg-white mb-4 mb-md-3 pb-1">
-                      <div className="mt-0 d-flex w-100 justify-content-between align-items-center">
-                        
-                        {/* Category Title */}
-                        <h1 className="h5 fw-bold text-dark mb-0">
-                          {selectedCategory}
-                        </h1>
+              <main className="flex-grow">
+                  <div className="sticky-bar bg-white mb-2 p-3 w-100 shadow-sm">
+                    <div className="d-flex flex-column flex-md-row w-100 justify-content-between align-items-start align-items-md-center gap-2">
+                      {/* Category Title */}
+                      <h1 className="h5 fw-bold text-dark mb-0">{selectedCategory}</h1>
 
-                        {/* Sort Dropdown */}
-                        <div className="d-flex align-items-center gap-2">
-                          <span className="small text-muted">Price:</span>
-                          <select
-                            className="form-select form-select-sm"
-                            style={{ width: '12rem' }} // ~ w-48
-                            value={sortBy}
-                            onChange={(e) => setSortBy(e.target.value)}
-                          >
-                            <option value="default">Default</option>
-                            <option value="price-low-high">Low to High</option>
-                            <option value="price-high-low">High to Low</option>
-                          </select>
-                        </div>
-
+                      {/* Sort Dropdown */}
+                      <div className="d-flex align-items-center gap-2">
+                        <span className="small text-muted">Price:</span>
+                        <select
+                          className="form-select form-select-sm"
+                          style={{ width: "12rem", minWidth: "8rem" }}
+                          value={sortBy}
+                          onChange={(e) => setSortBy(e.target.value)}
+                        >
+                          <option value="default">Default</option>
+                          <option value="price-low-high">Low to High</option>
+                          <option value="price-high-low">High to Low</option>
+                        </select>
                       </div>
                     </div>
+                  </div>
 
                   {/* Products Grid */}
-                  <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 g-md-4">
+                  <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 g-md-4 p-2">
                     {sortedProducts.map((product) => (
                       <div key={product.id} className="col">
                         <ProductCard {...product} />

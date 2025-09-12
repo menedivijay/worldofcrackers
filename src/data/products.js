@@ -10,7 +10,7 @@ export const products = [
   }, 
   {
     id: "3",
-    name: "Standard Multi color Sparkels (30 Pcs)",
+    name: "Standard MultiColor Sparkels(30 Pcs)",
     brand:"Standard",
     image:"images/sparkles.jpg",
     originalPrice: 1099,
@@ -37,7 +37,7 @@ export const products = [
   },
   {
     id: "6", 
-    name: "Standard Multi Color Flower pots (6 Pcs)",
+    name: "Standard MultiColor Flower pots(6 Pcs)",
     brand:"Standard",
     image: "images/mutlicolorpots.jpg", 
     originalPrice:399,
