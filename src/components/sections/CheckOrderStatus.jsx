@@ -11,7 +11,7 @@ const CheckOrderStatus = () => {
         return (
           <div className="text-center py-4">
             <p className="text-muted">
-              Please login to view your Orders.
+              Please login to view your Order Status.
             </p>
           </div>
         );

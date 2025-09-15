@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import useCart from "../contexts/CartContext";
+import products from "../data/products";
 import "../App.css"
 import { ArrowLeft,  Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -14,11 +15,27 @@ function Cart() {
   };
 
   const [isCheckout, setIsCheckout] = useState(false);
-  const { state, updateQuantity, removeItem } = useCart();
+  const { items: cartItems = [], removeItem, updateQuantity, state } = useCart();
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+
+  const cartProducts = cartItems
+    .map((item) => {
+      const product = products.find((p) => p.id === item.id);
+      return product ? { ...product, quantity: item.quantity } : null;
+    })
+    .filter(Boolean);
  
   const total = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+  const subtotal = cartProducts.reduce(
+    (sum, product) =>
+      sum + (product?.discountedPrice || 0) * (product?.quantity || 0),
+    0
+  );
+
+  //const shipping = subtotal > 500 ? 0 : 40;
+
+  
   const [customerDetails, setCustomerDetails] = useState({
     fullName: "",
     phoneNumber: "",
@@ -52,12 +69,40 @@ function Cart() {
       setIsPlacingOrder(false); // re-enable button
     }
     // Validate required fields
-    if (!customerDetails.fullName || !customerDetails.address || !customerDetails.city || 
-        !customerDetails.pincode || !customerDetails.phoneNumber) {
+    if (
+      !customerDetails.fullName ||
+      !customerDetails.address ||
+      !customerDetails.city ||
+      !customerDetails.pincode ||
+      !customerDetails.phoneNumber
+    ) {
       alert("Please fill in all required fields");
       return;
     }
+
     const newOrderId = generateOrderId();
+
+    const orderData = {
+      orderId: newOrderId,
+      customerDetails,
+      items: cartProducts.map((product) => ({
+        id: product.id,
+        name: product.name,
+        image: product.image,
+        brand: product.brand,
+        quantity: product.quantity,
+        price: product.discountedPrice,
+      })),
+      subtotal,
+      total,
+      orderDate: new Date().toISOString(),
+      status: "processing",
+    };
+
+    const existingOrders = JSON.parse(localStorage.getItem("userOrders") || "[]");
+    const updatedOrders = [orderData, ...existingOrders];
+    localStorage.setItem("userOrders", JSON.stringify(updatedOrders));
+
     setOrderId(newOrderId);
     
     setOrderPlaced(true);
@@ -389,10 +434,21 @@ function Cart() {
 export default Cart;
 
 Cart.prototype = {
-  fullName: PropTypes.string.isRequired,
-  address: PropTypes.string.isRequired,
-  city: PropTypes.string.isRequired,
-  pincode: PropTypes.string.isRequired,
-  phoneNumber: PropTypes.string.isRequired,
-  paymentMethod: PropTypes.string.isRequired,
+  cartItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      quantity: PropTypes.number.isRequired,
+    })
+  ),
+  customerDetails: PropTypes.shape({
+    fullName: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    pincode: PropTypes.string.isRequired,
+    phoneNumber: PropTypes.string.isRequired,
+    paymentMethod: PropTypes.string.isRequired,
+  }),
 };
+
+
+
