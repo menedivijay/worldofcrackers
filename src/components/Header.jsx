@@ -1,21 +1,26 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Login from '../pages/Login';
+import { useState } from 'react';
 import PropTypes from "prop-types";
 import useCart from '../contexts/CartContext';
 import { Filter, ShoppingCart } from 'lucide-react';
 import { Search, User } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from "react-router-dom";
+import { Dropdown, Button } from "react-bootstrap";
 import '../App.css'
 
 function Headers({ onFilterClick }){
 
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const { state } = useCart();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const navigate = useNavigate();
 
 
     return (
-          <header className="sticky-top shadow-sm" style={{width: "100%",backgroundImage: "url('/images/header1.gif')", backgroundSize: "cover", backgroundPosition: "center",}}>
+      
+          <header className="sticky-top shadow-sm" style={{width: "100%",backgroundImage: "url('/images/')", backgroundSize: "cover", backgroundPosition: "center", backgroundColor:"black"}}>
             <div className="container-fluid px-3">
 
               {/* Navbar Row */}
@@ -41,10 +46,10 @@ function Headers({ onFilterClick }){
                 {/* Search Bar (Desktop Only) */}
                 <div className="d-none d-md-flex flex-grow-1 mx-4" style={{ maxWidth: '500px' }}>
                   <div className="position-relative w-100">
-                    <Search className="bi bi-search position-absolute top-50 start-0 translate-middle-y ps-3 text-muted" size={30}/>
+                    <Search className="bi bi-search position-absolute top-50 start-0 translate-middle-y ps-3 text-muted" size={40}/>
                     <input 
                       type="text" 
-                      className="form-control ps-5" 
+                      className="form-control ps-5 p-2" 
                       placeholder="Search for Crackers, Fireworks and More"
                     />
                   </div>
@@ -52,14 +57,35 @@ function Headers({ onFilterClick }){
 
                 {/* Action Buttons */}
                 <div className="d-flex align-items-center gap-1 gap-md-3">
-                  <button
-                    type="button"
-                    className="btn text-white d-flex align-items-center  px-md-1 position-relative"
-                    onClick={() => navigate("/profile")}
-                  >
-                    <User className="bi bi-cart me-md-2" />
-                    <span>{isAuthenticated ? user?.username : 'Profile'}</span>
-                  </button>
+                  <Dropdown align="end">
+                    <Dropdown.Toggle
+                      as={Button}
+                      size="sm"
+                      className="d-flex align-items-center gap-2 text-light bg-transparent border-0"
+                    >
+                      <User className="h-4 w-4" />
+                      <span className='fs-6'>{isAuthenticated ? user?.username : "Profile"}</span>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      {isAuthenticated ? (
+                        <>
+                          <Dropdown.Item onClick={() => navigate("/profile")}>
+                            My Orders
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={() => navigate("/personalinfo")}>Account Settings</Dropdown.Item>
+                          <Dropdown.Divider />
+                          <Dropdown.Item onClick={()=> logout()}>
+                             Logout
+                          </Dropdown.Item>
+                        </>
+                      ) : (
+                        <Dropdown.Item onClick={() => setIsLoginModalOpen(true)}>
+                          Login / Sign Up
+                        </Dropdown.Item>
+                      )}
+                    </Dropdown.Menu>
+                  </Dropdown>
                   <button type="button" className="btn text-white d-flex align-items-center  px-md-1 position-relative"
                     onClick={() => navigate("/cart")}
                   >
@@ -92,7 +118,12 @@ function Headers({ onFilterClick }){
                 </div>
               </div>
             </div>
+            <Login
+                       isOpen={isLoginModalOpen}
+                       onClose={() => setIsLoginModalOpen(false)}
+            />
           </header>
+            
 
 );
 }

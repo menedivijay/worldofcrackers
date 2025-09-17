@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { Card, Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 
 
 const PersonalInformation = () => {
   const { user, isAuthenticated, setUser } = useAuth();
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -77,21 +80,51 @@ const PersonalInformation = () => {
   }
 
   return (
-    <div className="d-flex flex-column gap-4">
-      {/* Header row */}
-      <div className="d-flex justify-content-between align-items-center">
-        <p className="text-muted mb-0">
-          Manage your personal details and contact information.
-        </p>
+    <div className="sticky-top vh-100 bg-light" style={{maxWidth:"100%"}}>
+        <header className="sticky-top shadow-sm" style={{width: "100%",backgroundImage: "url('/images/')", backgroundSize: "cover", backgroundPosition: "center", backgroundColor:"black"}}>
+            <div className="container-fluid px-3">
+
+              {/* Navbar Row */}
+              <div className="d-flex align-items-center justify-content-between" style={{ height: '60px' }}>
+                
+
+                {/* Desktop Logo */}
+                <div className="d-none d-md-flex align-items-center gap-2 cursor-pointer">
+                  <div className="fw-bold text-white fs-4 cursor-pointer" 
+                  onClick={()=>navigate("/")}>✨ DiwaliMart</div>
+                </div>
+                 
+                 {isAuthenticated && user && (
+                <h4 className="text-white mb-1">Hello, {user.username}</h4>
+              )}
+
+                {/* Action Buttons */}
+                <div className="d-flex align-items-center gap-1 gap-md-3">
+                  <button type="button" className="btn text-white d-flex align-items-center  px-md-1 position-relative"
+                    onClick={() => navigate("/")}>
+                      <LogOut className="bi bi-cart me-md-2 fixed"/>
+                      <span className="d-none d-md-inline">Back</span>
+                    </button>
+                </div>
+              </div>
+            </div>
+          </header>
+      <div className="d-flex sticky-top justify-content-between align-items-center px-4 my-2 py-0 " style={{top:"60px", zIndex:1040 }}>
+            <div>
+              <h1 className="h4 fw-semibold mb-1"
+              style={{ fontFamily: "'Poppins', sans-serif",color:"black" }}
+            >ACCOUNT SETTINGS</h1>
+            </div>
         {!isEditing && (
-          <Button  onClick={() => setIsEditing(true)} style={{backgroundColor:"purple", borderColor:"purple"}}>
+          <Button  onClick={() => setIsEditing(true)} style={{backgroundColor:"black", borderColor:"black"}}>
             Edit
           </Button>
         )}
+      
       </div>
-
+      <hr className="m-1"></hr>
       {/* Basic Information */}
-      <Card className="p-4 border">
+      <Card className=" container p-4 border mt-2 col-md-6" style={{backgroundColor:"white"}}>
         <h5 className="fw-semibold text-dark mb-3">Basic Information</h5>
         <Form>
           <div className="row g-3">
@@ -155,7 +188,7 @@ const PersonalInformation = () => {
               <Button variant="outline-secondary" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button onClick={handleSave} style={{backgroundColor:"purple", borderColor:"purple"}}>
+              <Button onClick={handleSave} style={{backgroundColor:"green", borderColor:"green"}}>
                 Save Changes
               </Button>
             </div>
@@ -163,6 +196,8 @@ const PersonalInformation = () => {
         </Form>
       </Card>
     </div>
+    
+    
   );
 };
 

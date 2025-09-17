@@ -36,10 +36,10 @@ function Sidebar({
                 className="btn btn-outline-light w-100 d-flex align-items-center justify-content-between py-2 fs-6 fw-semibold text-dark border-bottom border-secondary"
               >
                 <span>Category</span>
-                {categoryOpen ? (
-                    <ChevronDown className="bi bi-chevron-down"/>
-                  ) : (
+                {!categoryOpen ? (
                     <ChevronRight className="bi bi-chevron-right"/>
+                  ) : (
+                    <ChevronDown className="bi bi-chevron-down"/>
                   )}
               </button>
 

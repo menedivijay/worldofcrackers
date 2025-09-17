@@ -5,7 +5,7 @@ import { Package, CalendarDays, CreditCard, Truck } from "lucide-react";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
-  const {  isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const loadOrders = () => {
@@ -55,7 +55,7 @@ const MyOrders = () => {
 
   if (orders.length === 0 && isAuthenticated) {
     return (
-      <div className="container my-5">
+      <div className="container my-2">
         <div className="card text-center p-4">
           <Package size={48} className="text-muted mx-auto mb-3" />
           <h5>No Orders Yet</h5>
@@ -67,11 +67,11 @@ const MyOrders = () => {
     );
   }
   return (
-    <div className="container my-5">
+    <div className="container my-2">
       <div className="card">
         <div className="card-header d-flex align-items-center gap-2">
           <Package size={20} />
-          <span>Order History ({orders.length} orders)</span>
+          <span className="fs-5">Orders</span>
         </div>
         <div className="card-body">
           {orders.map((order) => (
@@ -79,7 +79,7 @@ const MyOrders = () => {
               {/* Order Header */}
               <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3">
                 <div>
-                  <p className="fw-semibold mb-1">Order #{order.orderId}</p>
+                  <p className="fw-semibold mb-1">Order ID: {order.orderId}</p>
                   <p className="text-muted small d-flex align-items-center gap-1 mb-0">
                     <CalendarDays size={14} />{" "}
                     {new Date(order.orderDate).toLocaleDateString()}
@@ -89,7 +89,7 @@ const MyOrders = () => {
                   <span className={getStatusClass(order.status)}>
                     {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                   </span>
-                  <span className="fw-bold">₹{order.total}</span>
+                  <span className="fw-bold">₹{Math.round(order.total * 1.18)}</span>
                 </div>
               </div>
 
@@ -141,21 +141,21 @@ const MyOrders = () => {
                   </h6>
                   <p className="text-muted mb-2">
                     {order.customerDetails.paymentMethod === "cod"
-                      ? "Cash on Delivery"
-                      : "Card Payment"}
+                      ? "Card Payment"
+                      : "Cash on Delivery"}
                   </p>
                   <div>
                     <div className="d-flex justify-content-between">
                       <span>Subtotal:</span>
-                      <span>₹{order.subtotal}</span>
+                      <span>₹{order.total}</span>
                     </div>
                     <div className="d-flex justify-content-between">
                       <span>Shipping:</span>
-                      
+                      <span>₹--{}</span>
                     </div>
                     <div className="d-flex justify-content-between fw-semibold">
-                      <span>Total:</span>
-                      <span>₹{order.total}</span>
+                      <span>Total(included Tax):</span>
+                      <span>₹{Math.round(order.total * 1.18)}</span>
                     </div>
                   </div>
                 </div>

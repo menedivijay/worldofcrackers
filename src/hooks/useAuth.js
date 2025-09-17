@@ -93,11 +93,23 @@ export const AuthProvider = ({ children }) => {
       return true;
 };
 
+const addOrder = (username, newOrder) => {
+  // Get existing orders for this user
+  const savedOrders = JSON.parse(localStorage.getItem(`orders_${username}`) || "[]");
+
+  // Add the new order
+  savedOrders.push(newOrder);
+
+  // Save back to localStorage
+  localStorage.setItem(`orders_${username}`, JSON.stringify(savedOrders));
+};
+
   const value = {
     user,
     login,
     signup,
     updateUser,
+    addOrder,
     setUser,
     logout,
     isAuthenticated: !!user,

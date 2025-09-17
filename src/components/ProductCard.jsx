@@ -1,6 +1,5 @@
 import { Plus, Minus } from "lucide-react";
 import useCart from "../contexts/CartContext";
-import { useAuth } from "../hooks/useAuth";
 
 const ProductCard = ({
   id,
@@ -11,13 +10,12 @@ const ProductCard = ({
   discountedPrice,
   currency = "₹",
 }) => {
-  const { isAuthenticated } = useAuth();
   const { addItem, updateQuantity, getItemQuantity } = useCart();
   const discountPercentage = Math.round(((originalPrice - discountedPrice) / originalPrice) * 100);
   const quantity = getItemQuantity(id);
 
   const handleAddToCart = () => {
-    if (isAuthenticated){
+
     addItem({
       id,
       name,
@@ -25,17 +23,15 @@ const ProductCard = ({
       image,
       price: discountedPrice,
       currency });
-    } else {
-      alert("Please login and add items to your cart")
-    }
+    
   };
 
   const handleQuantityChange = (newQuantity) => {
     updateQuantity(id, newQuantity);
   };
   return (
-    <div className="card  h-100 w-150 shadow-sm  border-2 rounded-3">
-      <div className="position-relative bg-light p-2 p-md-4 overflow-hidden" style={{ aspectRatio: '1 / 1' }}>
+    <div className="card  h-100 w-150 shadow-sm  border-0 rounded-3">
+      <div className="position-relative bg-light p-2 p-md-2 overflow-hidden" style={{ aspectRatio: '1 / 1' }}>
         <img 
           src={image} 
           alt={name}
@@ -46,8 +42,8 @@ const ProductCard = ({
         />
         {discountPercentage > 0 && (
           <div 
-            className="position-absolute top-0 start-0 bg-success text-white small fw-semibold px-2 py-1 rounded" 
-            style={{ marginTop: "0.5rem", marginLeft: "0.5rem" }}
+            className="position-absolute top-0 start-0 bg-success text-white small fw-semibold px-1 py-1 rounded" 
+            style={{ marginTop: "0.2rem", marginLeft: "0.2rem" }}
           >
             {discountPercentage}% OFF
           </div>
@@ -55,20 +51,22 @@ const ProductCard = ({
       </div>
       <div className="card-body d-flex flex-column">
         <div className="mb-2">
-          <div className="badge mb-1 rounded-pill text-dark " style={{backgroundColor:"#c5c5c5ff"}}>
-            {brand}
-          </div>
           <h3 className="small fw-medium text-body text-truncate mb-0">
             {name}
           </h3>
         </div>
         <p className="card-text small mb-2">
-          <s className="text-muted">{originalPrice} {currency}</s>{" "}
+          <s className="text-muted ">{originalPrice} {currency}</s>{" "}
           <span className="fw-bold text-success">
             {discountedPrice} {currency}
           </span>
+          
+        
+        <span className="badge text-white small mx-1 bg-secondary" style={{}}>{brand}</span>
         </p>
+
         {quantity === 0 ? (
+            
             <button 
               onClick={handleAddToCart}
               className="btn btn-sm btn-dark w-100 p-1"
@@ -97,7 +95,8 @@ const ProductCard = ({
             </div>
           )}
       </div>
-    </div>
+      </div>
+    
   );
 };
 

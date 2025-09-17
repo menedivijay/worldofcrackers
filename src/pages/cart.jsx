@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 import PropTypes from "prop-types";
 import useCart from "../contexts/CartContext";
 import products from "../data/products";
@@ -13,7 +14,8 @@ function Cart() {
     navigate("/");
     window.location.reload();
   };
-
+  
+   const { isAuthenticated } = useAuth();
   const [isCheckout, setIsCheckout] = useState(false);
   const { items: cartItems = [], removeItem, updateQuantity, state } = useCart();
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
@@ -58,6 +60,11 @@ function Cart() {
   };
   // Handle order placement
   const handlePlaceOrder = async () => {
+    if(!isAuthenticated){
+      alert("Please login to place the order");
+      return;
+    }
+    
     setIsPlacingOrder(true); // disable button and show "Placing Order..."
     try {
       // simulate API call or your order logic
@@ -115,17 +122,9 @@ function Cart() {
     }));
   };
 
-
   if (state.items.length === 0) {
     return (
       <div className="container py-5">
-        <button
-          className="btn btn-outline-secondary mb-3"
-          onClick={() => navigate("/")}
-        >
-          <ArrowLeft className="bi bi-arrow-left me-2"/> Back to Shopping
-        </button>
-
         <div className="text-center py-5">
           <h2 className="fw-bold mb-3">Your cart is empty</h2>
           <p className="text-muted mb-4">Add some products to get started!</p>
@@ -160,7 +159,7 @@ function Cart() {
             <p className="mb-0">Total Price: ₹{Math.round(total * 1.18)}</p>
             <p className="mb-0">
               Payment Method:{" "}
-              {customerDetails.paymentMethod === "cod"
+              {customerDetails.paymentMethod === "co"
                 ? "Cash on Delivery"
                 : "Card Payment"}
             </p>
@@ -179,21 +178,36 @@ function Cart() {
   }
 
   return (
+    <div className="sticky-top h-100 bg-light" style={{maxWidth:"100%"}}>
+        <header className="sticky-top shadow-sm" style={{width: "100%",backgroundImage: "url('/images/')", backgroundSize: "cover", backgroundPosition: "center", backgroundColor:"black"}}>
+            <div className="container-fluid px-3">
+
+              {/* Navbar Row */}
+              <div className="d-flex align-items-center justify-content-between" style={{ height: '60px' }}>
+                
+
+                {/* Desktop Logo */}
+                <div className="d-none d-md-flex align-items-center gap-2">
+                  <div className="fw-bold text-white fs-4" onClick={()=>navigate("/")}>✨ DiwaliMart</div>
+                </div>
+                 
+                {/* Action Buttons */}
+                <div className="d-flex align-items-center gap-1 gap-md-3">
+                  <button type="button" className="btn text-white d-flex align-items-center  px-md-1 position-relative"
+                    onClick={() => navigate("/")}>
+                      <ArrowLeft className="bi bi-cart me-md-2 fixed"/>
+                      <span className="d-none d-md-inline text-white">Back to Shopping</span>
+                    </button>
+                </div>
+              </div>
+            </div>
+          </header>
     
-    <div className="container">
-      <div className="sticky-checkout bg-white mb-2 p-2  w-100 shadow-sm">
-        {/* Back Button */}
-        <button
-             className="btn text-dark position-sticky sticky-top bg-white"
-             onClick={() => navigate("/")} style={{top:"4rem", zIndex: 1040}}
-         >
-        <ArrowLeft className="bi bi-arrow-left me-2"/> Back to Shopping 
-        </button>
-      </div>
-      <div className="row g-4">
+      <div className="container">
+         <div className="row g-4">
         {/* Cart Items */}
-        <div className="col-lg-8">
-          <div className="card">
+        <div className="col-lg-8 h-100">
+          <div className="card mt-3">
             <div className="card-header">
               <h5 className="mb-0">Shopping Cart ({state.totalItems} items)</h5>
             </div>
@@ -256,7 +270,7 @@ function Cart() {
 
         <div className="col-lg-4">
             <div
-              className="card sticky-top custom-top-24"
+              className="card sticky-top custom-top-24 mt-3"
               style={{ top: "3.8rem", zIndex: 1040 }}
             >
               <div className="card-header">
@@ -337,6 +351,7 @@ function Cart() {
                         type="text"
                         id="phoneNumber"
                         className="form-control"
+                        maxLength={10}
                         value={customerDetails.phoneNumber}
                         onChange={(e) =>
                           handleInputChange("phoneNumber", e.target.value)
@@ -388,6 +403,7 @@ function Cart() {
                       <input
                         type="text"
                         id="pincode"
+                        maxLength={6}
                         className="form-control"
                         value={customerDetails.pincode}
                         onChange={(e) => handleInputChange("pincode", e.target.value)}
@@ -425,6 +441,7 @@ function Cart() {
               </div>
           </div>
       </div>
+    </div>
     </div>
   );
 

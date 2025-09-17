@@ -1,4 +1,5 @@
 import Sidebar from './Sidebar';
+import Banner from './Banner';
 import products from '../data/products';
 import { X } from 'lucide-react';
 import { useState, useMemo } from 'react';
@@ -6,6 +7,7 @@ import '../App.css';
 import '../Login.css';
 import ProductCard from './ProductCard';
 import Header from './Header';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -65,6 +67,7 @@ function Dashboard() {
   return(
     <div>
           <Header onFilterClick={() => setMobileFiltersOpen(true)} />
+          <Banner/>
             <div className="d-flex container-fluid">
              <div className="d-none d-lg-block" style={{top:"4rem"}}>
               <Sidebar 

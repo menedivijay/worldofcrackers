@@ -26,13 +26,12 @@ const Login = ({ isOpen, onClose }) => {
       }
     } else {
       const success = login(username, password);
-      if (success) {
-        alert("Login Successful, Welcome back!");
+      if (!success) {
+        alert("Login Failed, Invalid credentials. Would you like to create an account?");
         onClose();
         resetForm();
-      } else {
-        alert("Login Failed, Invalid credentials. Would you like to create an account?");
-        setIsSignupMode(true);
+      } else{
+        onClose();
       }
     }
   };
