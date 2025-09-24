@@ -1,8 +1,8 @@
 import Sidebar from './Sidebar';
 import Banner from './Banner';
-import products from '../data/products';
+// import products from '../data/products';
 import { X } from 'lucide-react';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import '../App.css';
 import '../Login.css';
 import ProductCard from './ProductCard';
@@ -16,18 +16,52 @@ function Dashboard() {
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [sortBy, setSortBy] = useState("default");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   
+  useEffect(() => {
+    const controller = new AbortController();
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await fetch('https://cracker-backend-0iz6.onrender.com/products', {
+          signal: controller.signal,
+        });
+        if (!response.ok) {
+          throw new Error(`Failed to load products (${response.status})`);
+        }
+        const data = await response.json();
+        // Normalize API fields to UI-friendly shape
+        const normalized = (Array.isArray(data) ? data : []).map((p) => ({
+          id: p._id ?? p.productId ?? String(Math.random()),
+          name: p.productName ?? '',
+          brand: p.brandName ?? '',
+          image: Array.isArray(p.images) && p.images[0]?.Location ? p.images[0].Location : '',
+          originalPrice: p.orignalPrice ?? p.originalPrice ?? 0,
+          discountedPrice: p.discountPrice ?? p.discountedPrice ?? 0,
+          category: p.category ?? 'All',
+          raw: p,
+        }));
+        setProducts(normalized);
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          setError(err.message || 'Unknown error');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProducts();
+    return () => controller.abort();
+  }, []);
 
-  
   // Extract unique brands from products
   const availableBrands = useMemo(() => {
-    const brands = products.map(product => {
-      // Extract brand from product name (first word typically)
-      const brandMatch = product.name.match(/^([A-Za-z]+)/);
-      return brandMatch ? brandMatch[1] : "Other";
-    });
+    const brands = products.map(product => product.brand || 'Other');
     return [...new Set(brands)].sort();
-  }, []);
+  }, [products]);
 
   const handleBrandToggle = (brand) => {
     setSelectedBrands(prev => 
@@ -44,14 +78,11 @@ function Dashboard() {
     
     // Apply brand filter if any brands are selected
     if (selectedBrands.length > 0) {
-      filtered = filtered.filter(product => {
-        const productBrand = product.name.match(/^([A-Za-z]+)/)?.[1];
-        return selectedBrands.includes(productBrand);
-      });
+      filtered = filtered.filter(product => selectedBrands.includes(product.brand));
     }
     
     return filtered;
-  }, [selectedCategory, selectedBrands,]);
+  }, [selectedCategory, selectedBrands, products]);
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
       case "price-low-high":
@@ -161,7 +192,13 @@ function Dashboard() {
 
                   {/* Products Grid */}
                   <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 g-md-4 p-2">
-                    {sortedProducts.map((product) => (
+                    {loading && (
+                      <div className="col-12 text-center py-5">Loading products...</div>
+                    )}
+                    {error && (
+                      <div className="col-12 text-center text-danger py-5">{error}</div>
+                    )}
+                    {!loading && !error && sortedProducts.map((product) => (
                       <div key={product.id} className="col">
                         <ProductCard {...product} />
                       </div>
@@ -169,7 +206,7 @@ function Dashboard() {
                   </div>
 
                   {/* No Products Message */}
-                  {sortedProducts.length === 0 && (
+                  {!loading && !error && sortedProducts.length === 0 && (
                     <div className="text-center py-5">
                       <p className="text-muted">No products found in this category.</p>
                     </div>

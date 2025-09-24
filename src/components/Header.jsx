@@ -35,12 +35,12 @@ function Headers({ onFilterClick }){
                   >
                     <Filter className="bi bi-funnel fs-5"/>
                   </button>
-                  <div className="fw-bold text-white fs-5">✨ DiwaliMart</div>
+                  <div className="fw-bold text-white fs-5">✨ World of Crackers</div>
                 </div>
 
                 {/* Desktop Logo */}
                 <div className="d-none d-md-flex align-items-center gap-2">
-                  <div className="fw-bold text-white fs-4">✨ DiwaliMart</div>
+                  <div className="fw-bold text-white fs-4">✨ World of Crackers</div>
                 </div>
 
                 {/* Search Bar (Desktop Only) */}

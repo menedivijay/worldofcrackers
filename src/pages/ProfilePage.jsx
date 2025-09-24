@@ -26,7 +26,7 @@ const ProfilePage = () => {
                 {/* Desktop Logo */}
                 <div className="d-none d-md-flex align-items-center gap-2 cursor-pointer">
                   <div className="fw-bold text-white fs-4 cursor-pointer" 
-                  onClick={()=>navigate("/")}>✨ DiwaliMart</div>
+                  onClick={()=>navigate("/")}>✨ World of Crackers</div>
                 </div>
                  
                  {isAuthenticated && user && (
