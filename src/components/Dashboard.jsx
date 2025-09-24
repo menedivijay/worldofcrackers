@@ -19,6 +19,8 @@ function Dashboard() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(1);
   
   useEffect(() => {
     const controller = new AbortController();
@@ -26,7 +28,12 @@ function Dashboard() {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch('https://cracker-backend-0iz6.onrender.com/products', {
+        const url = new URL('https://cracker-backend-0iz6.onrender.com/products');
+        if (searchTerm && searchTerm.trim().length > 0) {
+          url.searchParams.append('keyword', searchTerm.trim());
+        }
+        url.searchParams.append('page', String(page));
+        const response = await fetch(url.toString(), {
           signal: controller.signal,
         });
         if (!response.ok) {
@@ -55,7 +62,7 @@ function Dashboard() {
     };
     loadProducts();
     return () => controller.abort();
-  }, []);
+  }, [searchTerm, page]);
 
   // Extract unique brands from products
   const availableBrands = useMemo(() => {
@@ -97,7 +104,7 @@ function Dashboard() {
 
   return(
     <div>
-          <Header onFilterClick={() => setMobileFiltersOpen(true)} />
+          <Header onFilterClick={() => setMobileFiltersOpen(true)} searchTerm={searchTerm} onSearchChange={(val) => { setSearchTerm(val); setPage(1); }} />
           <Banner/>
             <div className="d-flex container-fluid">
              <div className="d-none d-lg-block" style={{top:"4rem"}}>
@@ -211,6 +218,13 @@ function Dashboard() {
                       <p className="text-muted">No products found in this category.</p>
                     </div>
                   )}
+
+                  {/* Pagination (simple prev/next; server page size is 15) */}
+                  <div className="d-flex justify-content-center align-items-center gap-2 py-3">
+                    <button className="btn btn-outline-secondary btn-sm" disabled={page <= 1 || loading} onClick={() => setPage((p) => Math.max(1, p - 1))}>Prev</button>
+                    <span className="small">Page {page}</span>
+                    <button className="btn btn-outline-secondary btn-sm" disabled={loading || (sortedProducts.length < 15)} onClick={() => setPage((p) => p + 1)}>Next</button>
+                  </div>
                 </main>
           </div>
        </div>

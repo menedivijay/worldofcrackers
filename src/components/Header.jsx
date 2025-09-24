@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { Dropdown, Button } from "react-bootstrap";
 import '../App.css'
 
-function Headers({ onFilterClick }){
+function Headers({ onFilterClick, searchTerm = "", onSearchChange }){
 
   const { isAuthenticated, user, logout } = useAuth();
   const { state } = useCart();
@@ -51,6 +51,8 @@ function Headers({ onFilterClick }){
                       type="text" 
                       className="form-control ps-5 p-2" 
                       placeholder="Search for Crackers, Fireworks and More"
+                      value={searchTerm}
+                      onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
                     />
                   </div>
                 </div>
@@ -114,6 +116,8 @@ function Headers({ onFilterClick }){
                     className="form-control ps-5" 
                     placeholder="Search products..." 
                     style={{ height: '40px' }} 
+                    value={searchTerm}
+                    onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
                   />
                 </div>
               </div>
@@ -130,6 +134,8 @@ function Headers({ onFilterClick }){
 
 Headers.propTypes = {
   onFilterClick: PropTypes.func,
+  searchTerm: PropTypes.string,
+  onSearchChange: PropTypes.func,
 };
 
 export default Headers;

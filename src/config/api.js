@@ -2,8 +2,18 @@
 // api.js
 const BASE_URL = "https://cracker-backend-0iz6.onrender.com";
 
+function normalizeUser(data) {
+  if (!data) return null;
+  return {
+    ...data,
+    username: data.username || data.userName || data.name || "",
+    fullName: data.fullName || data.name || "",
+    email: data.email || "",
+    phoneNumber: data.phoneNumber || data.phone || "",
+  };
+}
 
-export const signup = async (fullname,username, email, phone, password) => {
+export const signup = async (fullname, username, email, phone, password) => {
   try {
     const response = await fetch(`${BASE_URL}/user/signup`, 
     {
@@ -18,18 +28,18 @@ export const signup = async (fullname,username, email, phone, password) => {
       }),
     });
 
+    const data = await response.json().catch(() => ({}));
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Signup error:", errorData);
-
-      return { success: false, message: errorData.message || "Signup failed" };
+      return { success: false, message: data.message || "Signup failed" };
     }
 
-    const data = await response.json();
-    localStorage.setItem("token", data.token); // save token for session
-    return { success: true };
+    const token = data?.token;
+    const user = normalizeUser(data?.data);
+    if (token) localStorage.setItem("token", token);
+    if (user) localStorage.setItem("authUser", JSON.stringify(user));
+
+    return { success: true, token, user };
   } catch (error) {
-    console.error("Signup failed:", error);
     return { success: false, message: "Network error" };
   }
 };
@@ -37,7 +47,7 @@ export const signup = async (fullname,username, email, phone, password) => {
 export const login = async (email, password) => {
   try {
     const response = await fetch(`${BASE_URL}/user/signin`, {
-      method: "GET",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: email,
@@ -45,17 +55,18 @@ export const login = async (email, password) => {
       }),
     });
 
+    const data = await response.json().catch(() => ({}));
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Login error:", errorData);
-      return { success: false, message: errorData.message || "Login failed" };
+      return { success: false, message: data.message || "Login failed" };
     }
 
-    const data = await response.json();
-    localStorage.setItem("token", data.token); // save token
-    return { success: true };
+    const token = data?.token;
+    const user = normalizeUser(data?.data);
+    if (token) localStorage.setItem("token", token);
+    if (user) localStorage.setItem("authUser", JSON.stringify(user));
+
+    return { success: true, token, user };
   } catch (error) {
-    console.error("Login error:", error);
     return { success: false, message: "Network error" };
   }
 };

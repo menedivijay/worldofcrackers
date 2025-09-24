@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Modal, Form } from "react-bootstrap";
 import "../App.css"
 import { signup, login } from "../config/api";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = ({ isOpen, onClose }) => {
   const [isSignupMode, setIsSignupMode] = useState(false);
@@ -11,35 +12,36 @@ const Login = ({ isOpen, onClose }) => {
   const [email, setEmail]=useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
-  //const { } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+  const { setUser } = useAuth();
 
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    
-    if (isSignupMode) {
-
-      //call signup API
-      const success = signup(fullname,username, email, phone, password);
-      if (success) {
-        console.log(success);
-        alert("Your account has been created successfully!");
-        onClose();
-        resetForm();
+    if (submitting) return;
+    setSubmitting(true);
+    try {
+      if (isSignupMode) {
+        const res = await signup(fullname, username, email, phone, password);
+        if (res.success) {
+          if (res.user) setUser(res.user);
+          alert("Your account has been created successfully!");
+          onClose();
+          resetForm();
+        } else {
+          alert(res.message || "Signup failed");
+        }
       } else {
-        alert("Username already exists. Please choose a different one.");
+        const res = await login(email, password);
+        if (!res.success) {
+          alert(res.message || "Login Failed, Invalid credentials.");
+          resetForm();
+        } else {
+          if (res.user) setUser(res.user);
+          onClose();
+        }
       }
-    } else {
-
-      
-      const success = login(email, password);
-      if (!success) {
-        alert("Login Failed, Invalid credentials. Would you like to create an account?");
-        onClose();
-        resetForm();
-      } else{
-        onClose();
-      }
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -47,6 +49,8 @@ const Login = ({ isOpen, onClose }) => {
     setUsername("");
     setPassword("");
     setPhone("");
+    setFullname("");
+    setEmail("");
     setIsSignupMode(false);
   };
 
@@ -138,11 +142,11 @@ const Login = ({ isOpen, onClose }) => {
           {/* Submit button */}
           <button
             type="submit"
-            variant="primary"
+            disabled={submitting}
             className="btn w-100 text-white"
             style={{backgroundColor:"purple"}}
           >
-            {isSignupMode ? "Create Account" : "Sign In"}
+            {submitting ? "Please wait..." : isSignupMode ? "Create Account" : "Sign In"}
           </button>
         </Form>
 
