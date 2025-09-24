@@ -16,6 +16,8 @@ const PersonalInformation = () => {
     phone: "",
   });
 
+  
+
   useEffect(() => {
     if (isAuthenticated && user) {
       const nameParts = user.username.split(" ");
@@ -25,6 +27,7 @@ const PersonalInformation = () => {
         email: user.email,
         phone: user.phone,
       });
+
     }
   }, [user, isAuthenticated]);
 
@@ -69,6 +72,7 @@ const PersonalInformation = () => {
     setIsEditing(false);
   };
 
+
   if (!isAuthenticated) {
     return (
       <div className="text-center py-4">
@@ -80,7 +84,7 @@ const PersonalInformation = () => {
   }
 
   return (
-    <div className="sticky-top vh-100 bg-light" style={{maxWidth:"100%"}}>
+    <div className="sticky-top h-100 bg-light" style={{maxWidth:"100%"}}>
         <header className="sticky-top shadow-sm" style={{width: "100%",backgroundImage: "url('/images/')", backgroundSize: "cover", backgroundPosition: "center", backgroundColor:"black"}}>
             <div className="container-fluid px-3">
 
@@ -109,23 +113,26 @@ const PersonalInformation = () => {
               </div>
             </div>
           </header>
-      <div className="d-flex sticky-top justify-content-between align-items-center px-4 my-2 py-0 " style={{top:"60px", zIndex:1040 }}>
+      <div className="d-flex sticky-top justify-content-between px-4 my-2 py-0 " style={{top:"65px", zIndex:1040 }}>
             <div>
               <h1 className="h4 fw-semibold mb-1"
               style={{ fontFamily: "'Poppins', sans-serif",color:"black" }}
             >ACCOUNT SETTINGS</h1>
             </div>
+      <hr className="m-1"></hr>
+      </div>
+      
+      {/* Basic Information */}
+      <Card className=" container p-4 border mt-2 col-md-6" style={{backgroundColor:"white"}}>
+        <div className="d-flex justify-content-between align-items-center">
+        <h5 className="fw-semibold text-dark mb-3">Basic Information</h5>
         {!isEditing && (
-          <Button  onClick={() => setIsEditing(true)} style={{backgroundColor:"black", borderColor:"black"}}>
+          <Button  onClick={() => setIsEditing(true)} style={{backgroundColor:"black", borderColor:"black",width:"10%"}}>
+            
             Edit
           </Button>
         )}
-      
-      </div>
-      <hr className="m-1"></hr>
-      {/* Basic Information */}
-      <Card className=" container p-4 border mt-2 col-md-6" style={{backgroundColor:"white"}}>
-        <h5 className="fw-semibold text-dark mb-3">Basic Information</h5>
+        </div>
         <Form>
           <div className="row g-3">
             <div className="col-md-6">
@@ -195,6 +202,9 @@ const PersonalInformation = () => {
           )}
         </Form>
       </Card>
+
+
+     
     </div>
     
     

@@ -15,7 +15,7 @@ function Cart() {
     window.location.reload();
   };
   
-   const { isAuthenticated } = useAuth();
+   const { isAuthenticated ,user} = useAuth();
   const [isCheckout, setIsCheckout] = useState(false);
   const { items: cartItems = [], removeItem, updateQuantity, state } = useCart();
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
@@ -88,8 +88,9 @@ function Cart() {
     }
 
     const newOrderId = generateOrderId();
-
+  
     const orderData = {
+      username: user.username,
       orderId: newOrderId,
       customerDetails,
       items: cartProducts.map((product) => ({
@@ -106,9 +107,10 @@ function Cart() {
       status: "processing",
     };
 
-    const existingOrders = JSON.parse(localStorage.getItem("userOrders") || "[]");
+    const key = `userOrders_${user.username}`;
+    const existingOrders = JSON.parse(localStorage.getItem(key) || "[]");
     const updatedOrders = [orderData, ...existingOrders];
-    localStorage.setItem("userOrders", JSON.stringify(updatedOrders));
+    localStorage.setItem(key, JSON.stringify(updatedOrders));
 
     setOrderId(newOrderId);
     

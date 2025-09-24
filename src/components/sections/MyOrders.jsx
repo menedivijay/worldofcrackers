@@ -5,29 +5,19 @@ import { Package, CalendarDays, CreditCard, Truck } from "lucide-react";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated , user} = useAuth();
 
   useEffect(() => {
-    const loadOrders = () => {
-      const savedOrders = localStorage.getItem("userOrders");
-      if (savedOrders) {
-        setOrders(JSON.parse(savedOrders));
-      }
-    };
-
-    loadOrders();
-
-    const handleStorageChange = (e) => {
-      if (e.key === "userOrders") {
-        loadOrders();
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
+  if (user && user.username) {
+    const key = `userOrders_${user.username}`;
+    const savedOrders = localStorage.getItem(key);
+    if (savedOrders) {
+      setOrders(JSON.parse(savedOrders));
+    } else {
+      setOrders([]); // fallback if no orders exist
+    }
+  }
+}, [user]);
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -37,9 +27,22 @@ const MyOrders = () => {
         return "badge bg-primary";
       case "shipped":
         return "badge bg-warning text-dark";
+      case "cancelled":
+        return "badge bg-danger";
       default:
         return "badge bg-secondary";
     }
+  };
+
+  const handleCancelOrder = (orderId) => {
+    alert("Do you want to cancel the order!");
+    const updatedOrders = orders.map((order) =>
+      order.orderId === orderId ? { ...order, status: "cancelled" } : order
+    );
+    setOrders(updatedOrders);
+    // Update localStorage
+    const key = user && user.username ? `userOrders_${user.username}` : `userOrders`;
+    localStorage.setItem(key, JSON.stringify(updatedOrders));
   };
 
 
@@ -74,8 +77,8 @@ const MyOrders = () => {
           <span className="fs-5">Orders</span>
         </div>
         <div className="card-body">
-          {orders.map((order) => (
-            <div key={order.orderId} className="border rounded p-3 mb-4">
+          {orders.map((order, idx) => (
+            <div key={order.orderId || idx} className="border rounded p-3 mb-3">
               {/* Order Header */}
               <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3">
                 <div>
@@ -127,6 +130,7 @@ const MyOrders = () => {
                     <Truck size={16} /> Delivery Address
                   </h6>
                   <div className="text-muted">
+                    
                     <p className="mb-0">{order.customerDetails.fullName}</p>
                     <p className="mb-0">{order.customerDetails.address}</p>
                     <p className="mb-0">
@@ -160,9 +164,18 @@ const MyOrders = () => {
                   </div>
                 </div>
               </div>
+              <div className="align-items-right pt-2">
+                {order.status !== "cancelled" && order.status !== "shipped" 
+                ?<button className="btn btn-outline-danger  rounded-0"
+                  onClick={() => handleCancelOrder(order.orderId)}>
+                  Cancel Order
+                </button> : "Your order is cannelled "}
+              </div>
             </div>
+            
           ))}
         </div>
+        
       </div>
     </div>
   );

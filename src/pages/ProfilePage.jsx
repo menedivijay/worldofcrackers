@@ -14,7 +14,6 @@ const ProfilePage = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-
   return (
     <div className="sticky-top h-100 bg-light" style={{maxWidth:"100%"}}>
         <header className="sticky-top shadow-sm" style={{width: "100%",backgroundImage: "url('/images/')", backgroundSize: "cover", backgroundPosition: "center", backgroundColor:"black"}}>

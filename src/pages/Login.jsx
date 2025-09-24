@@ -1,8 +1,9 @@
-import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { Modal, Form } from "react-bootstrap";
 import "../App.css"
+import { signup, login } from "../config/api";
+
 const Login = ({ isOpen, onClose }) => {
   const [isSignupMode, setIsSignupMode] = useState(false);
   const [fullname, setFullname]=useState("");
@@ -10,14 +11,18 @@ const Login = ({ isOpen, onClose }) => {
   const [email, setEmail]=useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
-  const { login, signup } = useAuth();
+  //const { } = useAuth();
+
 
   const handleLogin = (e) => {
     e.preventDefault();
     
     if (isSignupMode) {
+
+      //call signup API
       const success = signup(fullname,username, email, phone, password);
       if (success) {
+        console.log(success);
         alert("Your account has been created successfully!");
         onClose();
         resetForm();
@@ -25,7 +30,9 @@ const Login = ({ isOpen, onClose }) => {
         alert("Username already exists. Please choose a different one.");
       }
     } else {
-      const success = login(username, password);
+
+      
+      const success = login(email, password);
       if (!success) {
         alert("Login Failed, Invalid credentials. Would you like to create an account?");
         onClose();
@@ -59,20 +66,30 @@ const Login = ({ isOpen, onClose }) => {
       <Modal.Body>
         <Form onSubmit={handleLogin}>
           {/* Username */}
-          <Form.Group className="mb-2" controlId="username">
-            <Form.Label>Username</Form.Label>
+          {!isSignupMode &&(
+            <Form.Group className="mb-2" controlId="email">
+            <Form.Label>Email</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </Form.Group>
+          )}
 
           {/* Phone (only for signup) */}
           {isSignupMode && (
-            <Form.Group className="mb-2" controlId="fullname">
+            <Form.Group className="mb-2">
+                <Form.Label>Username</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
                 <Form.Label>Full Name</Form.Label>
                 <Form.Control
                   type="text"

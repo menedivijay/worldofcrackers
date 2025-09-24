@@ -66,43 +66,25 @@ export const AuthProvider = ({ children }) => {
     window.location.reload();
   };
 
-  const updateUser = (username, updatedData) => {
-      // Get existing users
-      let users = JSON.parse(localStorage.getItem("users") || "[]");
 
-      // Find index of the user
-      const index = users.findIndex((u) => u.username === username);
-
-      if (index === -1) {
-        return false; // user not found
-      }
-
-      // Update user object (keep old data, override with new)
-      users[index] = { ...users[index], ...updatedData };
-
-      // Save back to localStorage
-      localStorage.setItem("users", JSON.stringify(users));
-
-      // If this is the logged-in user, update authUser and context
-      const authUser = JSON.parse(localStorage.getItem("authUser"));
-      if (authUser && authUser.username === username) {
-        localStorage.setItem("authUser", JSON.stringify(users[index]));
-        setUser(users[index]);
-      }
-
+  const updateUser = (updatedData) => {
+    if (user) {
+      const updatedUser = { ...user, ...updatedData };
+      setUser(updatedUser);
+      localStorage.setItem('authUser', JSON.stringify(updatedUser));
       return true;
-};
+    }
+    return false;
+  };
 
-const addOrder = (username, newOrder) => {
-  // Get existing orders for this user
-  const savedOrders = JSON.parse(localStorage.getItem(`orders_${username}`) || "[]");
-
-  // Add the new order
-  savedOrders.push(newOrder);
-
-  // Save back to localStorage
-  localStorage.setItem(`orders_${username}`, JSON.stringify(savedOrders));
-};
+  const addOrder = (newOrder) => {
+    if (user) {
+      const key = `userOrders${user.username}`;
+      const savedOrders = JSON.parse(localStorage.getItem(key) || "[]");
+      savedOrders.push(newOrder);
+      localStorage.setItem(key, JSON.stringify(savedOrders));
+    }
+  };
 
   const value = {
     user,
@@ -110,8 +92,8 @@ const addOrder = (username, newOrder) => {
     signup,
     updateUser,
     addOrder,
-    setUser,
     logout,
+    setUser,
     isAuthenticated: !!user,
   };
 
