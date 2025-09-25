@@ -93,13 +93,13 @@ function Cart() {
       username: user.username,
       orderId: newOrderId,
       customerDetails,
-      items: cartProducts.map((product) => ({
+      items: state.items.map((product) => ({
         id: product.id,
         name: product.name,
         image: product.image,
         brand: product.brand,
         quantity: product.quantity,
-        price: product.discountedPrice,
+        price: product.price,
       })),
       subtotal,
       total,
@@ -113,7 +113,7 @@ function Cart() {
     localStorage.setItem(key, JSON.stringify(updatedOrders));
 
     setOrderId(newOrderId);
-    
+
     setOrderPlaced(true);
    };
 
@@ -162,8 +162,8 @@ function Cart() {
             <p className="mb-0">
               Payment Method:{" "}
               {customerDetails.paymentMethod === "co"
-                ? "Cash on Delivery"
-                : "Card Payment"}
+                ? "Card Payment"
+                : "Cash on Delivery"}
             </p>
           </div>
 
