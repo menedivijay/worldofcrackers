@@ -5,12 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const categories = [
     "All",
-    "Sparkels",
-    "Flower Pots",
-    "Bombs",
-    "Multi Shots",
-    "Rockets",
-    "Assorted Crackers", 
+    "SPARKLERS",
+    "FLOWER POTS",
+    "Ground Chakkars",
+    "KIDS FANCY",
+    "BOMBS",
+    "AROCKETS", 
+    "GARLANDS"
 
 ];
 
