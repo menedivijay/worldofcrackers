@@ -15,7 +15,7 @@ const MyOrders = () => {
       setOrders(JSON.parse(savedOrders));
     } else {
       setOrders([]); // fallback if no orders exist
-    }
+    } 
   }
 }, [user]);
 
@@ -169,7 +169,7 @@ const MyOrders = () => {
                 ?<button className="btn btn-outline-danger  rounded-0"
                   onClick={() => handleCancelOrder(order.orderId)}>
                   Cancel Order
-                </button> : "Your order is cannelled "}
+                </button> : ""}
               </div>
             </div>
             
