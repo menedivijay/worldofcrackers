@@ -220,11 +220,13 @@ function Dashboard() {
                   )}
 
                   {/* Pagination (simple prev/next; server page size is 15) */}
-                  <div className="d-flex justify-content-center align-items-center gap-2 py-3">
-                    <button className="btn btn-outline-secondary btn-sm" disabled={page <= 1 || loading} onClick={() => setPage((p) => Math.max(1, p - 1))}>Prev</button>
-                    <span className="small">Page {page}</span>
-                    <button className="btn btn-outline-secondary btn-sm" disabled={loading || (sortedProducts.length < 15)} onClick={() => setPage((p) => p + 1)}>Next</button>
-                  </div>
+                  {!loading && !error && sortedProducts.length > 0 && (sortedProducts.length === 15 || page > 1) && (
+                    <div className="d-flex justify-content-center align-items-center gap-2 py-3">
+                      <button className="btn btn-outline-secondary btn-sm" disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>Prev</button>
+                      <span className="small">Page {page}</span>
+                      <button className="btn btn-outline-secondary btn-sm" disabled={sortedProducts.length < 15} onClick={() => setPage((p) => p + 1)}>Next</button>
+                    </div>
+                  )}
                 </main>
           </div>
        </div>

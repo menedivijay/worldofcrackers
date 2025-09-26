@@ -7,10 +7,18 @@ const categories = [
     "All",
     "SPARKLERS",
     "FLOWER POTS",
+<<<<<<< HEAD
     "BOMBS",
     "MULTIPILE SHOTS",
     "",
     "Assorted Crackers", 
+=======
+    "Ground Chakkars",
+    "KIDS FANCY",
+    "BOMBS",
+    "AROCKETS", 
+    "GARLANDS"
+>>>>>>> d1a5616e91844be4057751e7a57a879c34b00b81
 
 ];
 
