@@ -106,7 +106,7 @@ function Dashboard() {
     <div>
           <Header onFilterClick={() => setMobileFiltersOpen(true)} searchTerm={searchTerm} onSearchChange={(val) => { setSearchTerm(val); setPage(1); }} />
           <Banner/>
-            <div className="d-flex container-fluid">
+            <div className="d-flex container-fluid px-0">
              <div className="d-none d-lg-block" style={{top:"4rem"}}>
               <Sidebar 
                 selectedCategory={selectedCategory}
@@ -174,9 +174,9 @@ function Dashboard() {
                   }
                 `}</style>
               </>  
-              <main className="flex-grow">
+              <main className="flex-grow w-100">
                   <div className="sticky-bar bg-white mb-2 p-3 w-100 shadow-sm">
-                    <div className="d-flex flex-column flex-md-row w-100 justify-content-between align-items-start align-items-md-center gap-2">
+                    <div className="d-flex flex-column flex-md-row w-100 fixed justify-content-between align-items-start align-items-md-center gap-2">
                       {/* Category Title */}
                       <h1 className="h5 fw-bold text-dark mb-0">{selectedCategory}</h1>
 
@@ -198,7 +198,7 @@ function Dashboard() {
                   </div>
 
                   {/* Products Grid */}
-                  <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 g-md-4 p-2">
+                  <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 g-md-4 p-3">
                     {loading && (
                       <div className="col-12 text-center py-5">Loading products...</div>
                     )}

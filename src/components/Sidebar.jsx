@@ -5,17 +5,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const categories = [
     "All",
-    "Sparkels",
-    "Flower Pots",
-    "Bombs",
-    "Multi Shots",
-    "Rockets",
+    "SPARKLERS",
+    "FLOWER POTS",
+    "BOMBS",
+    "MULTIPILE SHOTS",
+    "",
     "Assorted Crackers", 
 
 ];
 
 function Sidebar({ 
-  selectedCategory, 
+  selectedCategory=[], 
   selectedBrands = [], 
   availableBrands = [], 
   onCategorySelect, 
@@ -105,7 +105,7 @@ function Sidebar({
 
   return (
     <div className="border-end bg-light h-100 position-sticky " style={{top:"4rem", width:"225px",}}>
-      <div className="p-2 position-sticky" style={{top:"4rem"}}>
+      <div className="px-3 py-2 position-sticky" style={{top:"4rem"}}>
        <div className="position-sticky pt-2" style={{top:"3.5rem",width:"100%",backgroundColor:"#F8F9FA"}}>
         <h2 className="h5 fw-semibold mb-4">Filters</h2>
        </div> 
