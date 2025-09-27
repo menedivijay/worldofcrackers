@@ -7,11 +7,14 @@ const categories = [
     "All",
     "SPARKLERS",
     "FLOWER POTS",
-    "Ground Chakkars",
+    "GROUND CHAKKERS",
     "KIDS FANCY",
     "BOMBS",
-    "AROCKETS", 
-    "GARLANDS"
+    "ROCKETS", 
+    "GARLANDS",
+    "FANCY SHOTS",
+    "MULTIPILE SHOTS",
+    "SEPECIAL MULTIPILE SHOTS",
 
 ];
 
@@ -107,8 +110,8 @@ function Sidebar({
   return (
     <div className="border-end bg-light h-100 position-sticky " style={{top:"4rem", width:"225px",}}>
       <div className="px-3 py-2 position-sticky" style={{top:"4rem"}}>
-       <div className="position-sticky pt-2" style={{top:"3.5rem",width:"100%",backgroundColor:"#F8F9FA"}}>
-        <h2 className="h5 fw-semibold mb-4">Filters</h2>
+       <div className="position-sticky bg-light pt-3" style={{top:"3.5rem",width:"100%",}}>
+        <h2 className="h5 fw-semibold pb-2 mb-1">Filters</h2>
        </div> 
        <div className="positon-sticky" style={{ top:"6rem"}}>
             <div className="mb-2 overflow-auto" style={{ maxHeight: "100%" }}>

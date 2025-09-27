@@ -219,7 +219,7 @@ function Dashboard() {
                     </div>
                   )}
 
-                  {/* Pagination (simple prev/next; server page size is 15) */}
+                  {/* Pagination (simple prev/next; server page size is 15)*/}
                   {!loading && !error && sortedProducts.length > 0 && (sortedProducts.length === 15 || page > 1) && (
                     <div className="d-flex justify-content-center align-items-center gap-2 py-3">
                       <button className="btn btn-outline-secondary btn-sm" disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>Prev</button>
