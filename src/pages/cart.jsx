@@ -35,7 +35,10 @@ function Cart() {
     0
   );
 
-  //const shipping = subtotal > 500 ? 0 : 40;
+  const shipping = total>2499? 0 :50; 
+  const handlingfee= total*0.01;
+
+  const totalFare=total+shipping+handlingfee;
 
   
   const [customerDetails, setCustomerDetails] = useState({
@@ -102,7 +105,9 @@ function Cart() {
         price: product.price,
       })),
       subtotal,
-      total,
+      totalFare,
+      shipping,
+      handlingfee,
       orderDate: new Date().toISOString(),
       status: "processing",
     };
@@ -158,7 +163,7 @@ function Cart() {
           </div>
 
           <div className="text-muted small mb-3">
-            <p className="mb-0">Total Price: ₹{Math.round(total * 1.18)}</p>
+            <p className="mb-0">Total Price: ₹{(totalFare)}</p>
             <p className="mb-0">
               Payment Method:{" "}
               {customerDetails.paymentMethod === "co"
@@ -290,11 +295,11 @@ function Cart() {
                   </div>
                   <div className="d-flex justify-content-between mb-2">
                     <span>Shipping</span>
-                    <span>--</span>
+                    <span>{shipping}</span>
                   </div>
                   <div className="d-flex justify-content-between mb-2">
-                    <span>Tax</span>
-                    <span>₹{Math.round(total * 0.12)}</span>
+                    <span>Handling Fee</span>
+                    <span>₹{Math.round(handlingfee)}</span>
                   </div>
 
                   <div className="mb-3">
@@ -317,7 +322,7 @@ function Cart() {
                   <hr />
                   <div className="d-flex justify-content-between fw-bold fs-5 mb-4">
                     <span>Total Fare</span>
-                    <span>₹{Math.round(total * 1.18)}</span>
+                    <span>₹{(totalFare)}</span>
                   </div>
 
                   <button
@@ -429,7 +434,7 @@ function Cart() {
                     </div>
                   </div>
 
-                  <h6>Total Amount: ₹{Math.round(total * 1.18)}</h6>
+                  <h6>Total Amount: ₹{totalFare}</h6>
 
                   <button
                     className="btn w-100 text-white" style={{backgroundColor:"green"}}

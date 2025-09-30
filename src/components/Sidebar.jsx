@@ -7,7 +7,7 @@ const categories = [
     "All",
     "SPARKLERS",
     "FLOWER POTS",
-    "GROUND CHAKKERS",
+    "Ground Chakkars",
     "KIDS FANCY",
     "BOMBS",
     "ROCKETS", 
@@ -27,18 +27,21 @@ function Sidebar({
   mobile = false
 }){
 
-  const [categoryOpen, setCategoryOpen] = useState(true);
-  const [brandsOpen, setBrandsOpen] = useState(true);
+  const [categoryOpen, setCategoryOpen] = useState();
+  const [brandsOpen, setBrandsOpen] = useState();
 
   if (mobile) {
       return (
         <div className="p-3">
-            {/* Category Section */}
             <div className="mb-4">
               <button
                 onClick={() => setCategoryOpen(!categoryOpen)}
                 className="btn btn-outline-light w-100 d-flex align-items-center justify-content-between py-2 fs-6 fw-semibold text-dark border-bottom border-secondary"
-              >
+                style={{
+                  top: "4rem",
+                  maxHeight: "calc(100vh - 4rem)", // fit viewport height
+                               
+                }} >
                 <span>Category</span>
                 {!categoryOpen ? (
                     <ChevronRight className="bi bi-chevron-right"/>
@@ -109,7 +112,7 @@ function Sidebar({
 
   return (
     <div className="border-end bg-light h-100 position-sticky " style={{top:"4rem", width:"225px",}}>
-      <div className="px-3 py-2 position-sticky" style={{top:"4rem"}}>
+      <div className="px-3 py-2 position-sticky responsive" style={{top:"4rem"}}>
        <div className="position-sticky bg-light pt-3" style={{top:"3.5rem",width:"100%",}}>
         <h2 className="h5 fw-semibold pb-2 mb-1">Filters</h2>
        </div> 
@@ -124,15 +127,16 @@ function Sidebar({
             </button>
 
             {categories.map((category) => (
-            categoryOpen && (<div className="mt-2 overflow-auto" style={{ maxHeight: "200px" }}>
+            categoryOpen && (<div className="mt-2">
             <button
                 key={category}
                 onClick={() => onCategorySelect && onCategorySelect(category)}
-                className="btn w-100 text-start px-3 py-2 small mb-1"
+                className="btn w-100 text-start px-3 py-2 small mb-1 responsive"
                 style={{
                 backgroundColor: selectedCategory === category ? "#343a40" : "#fff", // dark vs light
                 color: selectedCategory === category ? "#fff" : "#212529",
-                border: "1px solid #ced4da", // optional: keep border consistent
+                border: "1px solid #ced4da",
+                overflowY:'auto' // optional: keep border consistent
                 }}
             >
                 {category}

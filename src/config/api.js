@@ -14,6 +14,7 @@ function normalizeUser(data) {
 }
 
 export const signup = async (fullname, username, email, phone, password) => {
+  
   try {
     const response = await fetch(`${BASE_URL}/user/signup`, 
     {

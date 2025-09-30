@@ -11,7 +11,7 @@ const PersonalInformation = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
-    lastName: "",
+    fullname: "",
     email: "",
     phone: "",
   });
@@ -23,9 +23,9 @@ const PersonalInformation = () => {
       const nameParts = user.username.split(" ");
       setFormData({
         username: nameParts[0] || user.username,
-        fullname: nameParts.slice(1).join(" ") || user.fullname,
+        fullname: nameParts.slice(1).join(" ") || user.fullName,
         email: user.email,
-        phone: user.phone,
+        phone: user.phoneNumber,
       });
 
     }
@@ -82,7 +82,7 @@ const PersonalInformation = () => {
       </div>
     );
   }
-
+  
   return (
     <div className="sticky-top h-100 bg-light" style={{maxWidth:"100%"}}>
         <header className="sticky-top shadow-sm" style={{width: "100%",backgroundImage: "url('/images/')", backgroundSize: "cover", backgroundPosition: "center", backgroundColor:"black"}}>
@@ -149,7 +149,7 @@ const PersonalInformation = () => {
               </Form.Group>
             </div>
             <div className="col-md-6">
-              <Form.Group controlId="lastName">
+              <Form.Group>
                 <Form.Label>Full Name</Form.Label>
                 <Form.Control
                   type="text"

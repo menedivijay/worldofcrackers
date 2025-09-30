@@ -92,7 +92,7 @@ const MyOrders = () => {
                   <span className={getStatusClass(order.status)}>
                     {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                   </span>
-                  <span className="fw-bold">₹{Math.round(order.total * 1.18)}</span>
+                  <span className="fw-bold">₹{Math.round(order.totalFare)}</span>
                 </div>
               </div>
 
@@ -149,17 +149,18 @@ const MyOrders = () => {
                       : "Cash on Delivery"}
                   </p>
                   <div>
-                    <div className="d-flex justify-content-between">
-                      <span>Subtotal:</span>
-                      <span>₹{order.total}</span>
-                    </div>
+                    
                     <div className="d-flex justify-content-between">
                       <span>Shipping:</span>
-                      <span>₹--{}</span>
+                      <span>₹{order.shipping}</span>
+                    </div>
+                    <div className="d-flex justify-content-between">
+                      <span>Handling Fee:</span>
+                      <span>₹{order.handlingfee}</span>
                     </div>
                     <div className="d-flex justify-content-between fw-semibold">
-                      <span>Total(included Tax):</span>
-                      <span>₹{Math.round(order.total * 1.18)}</span>
+                      <span>Total Fare:</span>
+                      <span>₹{Math.round(order.totalFare)}</span>
                     </div>
                   </div>
                 </div>

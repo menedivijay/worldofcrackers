@@ -20,38 +20,44 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [page, setPage] = useState(1);
+  // Pagination removed; we will fetch all products
   
   useEffect(() => {
     const controller = new AbortController();
-    const loadProducts = async () => {
+    const loadAllProducts = async () => {
       try {
         setLoading(true);
         setError(null);
-        const url = new URL('https://cracker-backend-0iz6.onrender.com/products');
-        if (searchTerm && searchTerm.trim().length > 0) {
-          url.searchParams.append('keyword', searchTerm.trim());
+        const aggregated = [];
+        const maxPages = 100; // hard cap safety
+        for (let currentPage = 1; currentPage <= maxPages; currentPage++) {
+          const url = new URL('https://cracker-backend-0iz6.onrender.com/products');
+          if (searchTerm && searchTerm.trim().length > 0) {
+            url.searchParams.append('keyword', searchTerm.trim());
+          }
+          url.searchParams.append('page', String(currentPage));
+          const response = await fetch(url.toString(), { signal: controller.signal });
+          if (!response.ok) {
+            throw new Error(`Failed to load products (${response.status})`);
+          }
+          const data = await response.json();
+          const pageItems = (Array.isArray(data) ? data : []);
+          const normalized = pageItems.map((p) => ({
+            id: p._id ?? p.productId ?? String(Math.random()),
+            name: p.productName ?? '',
+            brand: p.brandName ?? '',
+            image: Array.isArray(p.images) && p.images[0]?.Location ? p.images[0].Location : '',
+            originalPrice: p.orignalPrice ?? p.originalPrice ?? 0,
+            discountedPrice: p.discountPrice ?? p.discountedPrice ?? 0,
+            category: p.category ?? 'All',
+            raw: p,
+          }));
+          aggregated.push(...normalized);
+          if (pageItems.length < 15) {
+            break; // last page reached
+          }
         }
-        url.searchParams.append('page', String(page));
-        const response = await fetch(url.toString(), {
-          signal: controller.signal,
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to load products (${response.status})`);
-        }
-        const data = await response.json();
-        // Normalize API fields to UI-friendly shape
-        const normalized = (Array.isArray(data) ? data : []).map((p) => ({
-          id: p._id ?? p.productId ?? String(Math.random()),
-          name: p.productName ?? '',
-          brand: p.brandName ?? '',
-          image: Array.isArray(p.images) && p.images[0]?.Location ? p.images[0].Location : '',
-          originalPrice: p.orignalPrice ?? p.originalPrice ?? 0,
-          discountedPrice: p.discountPrice ?? p.discountedPrice ?? 0,
-          category: p.category ?? 'All',
-          raw: p,
-        }));
-        setProducts(normalized);
+        setProducts(aggregated);
       } catch (err) {
         if (err.name !== 'AbortError') {
           setError(err.message || 'Unknown error');
@@ -60,9 +66,9 @@ function Dashboard() {
         setLoading(false);
       }
     };
-    loadProducts();
+    loadAllProducts();
     return () => controller.abort();
-  }, [searchTerm, page]);
+  }, [searchTerm]);
 
   // Extract unique brands from products
   const availableBrands = useMemo(() => {
@@ -104,7 +110,7 @@ function Dashboard() {
 
   return(
     <div>
-          <Header onFilterClick={() => setMobileFiltersOpen(true)} searchTerm={searchTerm} onSearchChange={(val) => { setSearchTerm(val); setPage(1); }} />
+          <Header onFilterClick={() => setMobileFiltersOpen(true)} searchTerm={searchTerm} onSearchChange={(val) => { setSearchTerm(val); }} />
           <Banner/>
             <div className="d-flex container-fluid px-0">
              <div className="d-none d-lg-block" style={{top:"4rem"}}>
@@ -144,7 +150,7 @@ function Dashboard() {
                   </div>
 
                   {/* Body */}
-                  <div className="p-3 overflow-auto" style={{ maxHeight: "calc(96vh - 60px)" }}>
+                  <div className="p-3">
                     <Sidebar
                       selectedCategory={selectedCategory}
                       onCategorySelect={setSelectedCategory}
@@ -197,36 +203,33 @@ function Dashboard() {
                     </div>
                   </div>
 
-                  {/* Products Grid */}
-                  <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 g-md-4 p-3">
+                  {/* Scrollable Products Area */}
+                  <div className="p-0 px-3" style={{ overflowY: "auto",}}>
+                    {/* Products Grid */}
+                    <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3 g-md-4">
+                      {!loading && !error && sortedProducts.map((product) => (
+                        <div key={product.id} className="col">
+                          <ProductCard {...product} />
+                        </div>
+                      ))}
+                    </div>
+
                     {loading && (
-                      <div className="col-12 text-center py-5">Loading products...</div>
+                      <div className="text-center py-5">
+                        <p className="text-muted">Loading products...</p>
+                      </div>
                     )}
                     {error && (
-                      <div className="col-12 text-center text-danger py-5">{error}</div>
-                    )}
-                    {!loading && !error && sortedProducts.map((product) => (
-                      <div key={product.id} className="col">
-                        <ProductCard {...product} />
+                      <div className="text-center py-5">
+                        <p className="text-muted">{error}</p>
                       </div>
-                    ))}
+                    )}
+                    {!loading && !error && sortedProducts.length === 0 && (
+                      <div className="text-center py-5">
+                        <p className="text-muted">No products found in this category.</p>
+                      </div>
+                    )}
                   </div>
-
-                  {/* No Products Message */}
-                  {!loading && !error && sortedProducts.length === 0 && (
-                    <div className="text-center py-5">
-                      <p className="text-muted">No products found in this category.</p>
-                    </div>
-                  )}
-
-                  {/* Pagination (simple prev/next; server page size is 15)*/}
-                  {!loading && !error && sortedProducts.length > 0 && (sortedProducts.length === 15 || page > 1) && (
-                    <div className="d-flex justify-content-center align-items-center gap-2 py-3">
-                      <button className="btn btn-outline-secondary btn-sm" disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>Prev</button>
-                      <span className="small">Page {page}</span>
-                      <button className="btn btn-outline-secondary btn-sm" disabled={sortedProducts.length < 15} onClick={() => setPage((p) => p + 1)}>Next</button>
-                    </div>
-                  )}
                 </main>
           </div>
        </div>
